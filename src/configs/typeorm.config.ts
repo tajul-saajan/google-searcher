@@ -3,6 +3,7 @@ import {
   TypeOrmModuleOptions,
 } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { User } from '../entities/user.entity';
 
 export const typeormConfig: TypeOrmModuleAsyncOptions = {
   imports: [ConfigModule],
@@ -16,7 +17,7 @@ export const typeormConfig: TypeOrmModuleAsyncOptions = {
       username: configService.getOrThrow('DB_USERNAME'),
       password: configService.getOrThrow('DB_PASSWORD'),
       migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
-      entities: [__dirname + '/../**/*.entity.ts'],
+      entities: [User],
       synchronize: true,
     };
   },
