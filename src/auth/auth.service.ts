@@ -5,12 +5,15 @@ import {
   InternalServerErrorException,
   Req,
 } from '@nestjs/common';
+import * as ExpressSession from 'express-session';
+
 import { EntityManager } from 'typeorm';
 import { UserSignupDto } from './dto/user-signup.dto';
 import { User } from '../entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -18,22 +21,33 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async signUpUser(signupDto: UserSignupDto) {
+  async signUpUser(signupDto: UserSignupDto, s: ExpressSession) {
     const { email } = signupDto;
-    const existingUser = await this.entityManager.findOneBy(User, { email });
+    const existingUser = await this.findUserByEmail(email);
     if (existingUser) {
-      // todo throw session error
+      return {
+        success: false,
+        error: 'email already exists',
+      };
     }
 
     signupDto.password = await this.hashPassword(signupDto.password);
 
     let user = new User();
     user = { ...signupDto } as User;
-    return await this.entityManager.save(User, user);
+    user = await this.entityManager.save(User, user);
+    return {
+      success: true,
+      data: user,
+    };
+  }
+
+  async findUserByEmail(email: string) {
+    return await this.entityManager.findOneBy(User, { email });
   }
 
   async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.entityManager.findOneBy(User, { email });
+    const user = await this.findUserByEmail(email);
     const passwordMatch: boolean = await this.compareHashPassword(
       password,
       user.password,

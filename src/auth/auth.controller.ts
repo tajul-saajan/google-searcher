@@ -40,8 +40,20 @@ export class AuthController {
   }
 
   @Post('signup')
-  async createUser(@Body() signupDto: UserSignupDto) {
-    return await this.service.signUpUser(signupDto);
+  async createUser(
+    @Body() signupDto: UserSignupDto,
+    @Session() s: ExpressSession,
+    @Res() response: Response,
+  ) {
+    const { success, error, data } = await this.service.signUpUser(
+      signupDto,
+      s,
+    );
+
+    if (!success) {
+      response.render('signup', { error });
+    }
+    response.render('login');
   }
 
   @Get('logout')
