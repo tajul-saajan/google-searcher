@@ -20,6 +20,9 @@ export class SearchStat {
   @Column()
   linksCount: number;
 
+  @Column({ type: 'bigint' })
+  totalResultsCount: number;
+
   @Column({ type: 'text' })
   response: string;
 
