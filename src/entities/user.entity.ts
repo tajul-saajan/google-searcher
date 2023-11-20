@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { UserSignupDto } from '../auth/dto/user-signup.dto';
 
 @Entity()
 export class User {
