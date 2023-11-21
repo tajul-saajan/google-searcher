@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeormConfig } from './configs/typeorm.config';
 import { ConfigModule } from '@nestjs/config';
 import { SearchStatModule } from './search-stat/search-stat.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { SearchStatModule } from './search-stat/search-stat.module';
     }),
     TypeOrmModule.forRootAsync(typeormConfig),
     SearchStatModule,
+    SearchModule,
   ],
 })
 export class AppModule {}
