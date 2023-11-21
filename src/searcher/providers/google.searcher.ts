@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as puppeteer from 'puppeteer';
 import { Searcher } from '../interfaces/searcher.interface';
+import { SearchStat } from '../../entities/search-stat.entity';
 
 @Injectable()
 export class GoogleSearcher implements Searcher {
@@ -20,28 +21,26 @@ export class GoogleSearcher implements Searcher {
       const adLinks = ads.querySelectorAll('a');
 
       const anchors = document.querySelectorAll('a');
-      let count = 0;
+      let linksCount = 0;
       for (const [k, v] of anchors.entries()) {
-        if (v.href) count++;
+        if (v.href) linksCount++;
       }
 
       const resultText = document.getElementById('result-stats').innerText;
-      console.log(resultText);
       const match = resultText.match(/\d[\d,]*/);
-      const resultCount = Number(match[0].replace(/,/g, ''));
+      const totalResultsCount = Number(match[0].replace(/,/g, ''));
 
       return {
-        ad_count: adLinks.length,
-        count,
-        resultCount,
-        resultText,
+        adsCount: adLinks.length,
+        linksCount,
+        totalResultsCount,
       };
     });
 
-    const html = await page.content();
+    const cachedResponse = await page.content();
 
     await browser.close();
 
-    return { ...results, html };
+    return { ...results, cachedResponse } as SearchStat;
   }
 }

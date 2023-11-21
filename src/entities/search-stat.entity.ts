@@ -24,7 +24,7 @@ export class SearchStat {
   totalResultsCount: number;
 
   @Column({ type: 'text' })
-  response: string;
+  cachedResponse: string;
 
   @CreateDateColumn()
   createdAt: Date;

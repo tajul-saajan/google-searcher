@@ -4,7 +4,8 @@ import {
   Inject,
   ParseFilePipe,
   Post,
-  Render,
+  Req,
+  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -12,6 +13,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FileParser, IFileParser } from '../parser/interfaces/file.parser';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { FileUploadedEvent } from './events/file-uploaded.event';
+import { Response, Request } from 'express';
+import { CsvField } from '../types/csvField';
 
 @Controller('search')
 export class SearchController {
@@ -20,25 +23,30 @@ export class SearchController {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  @Render('home')
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async postDummy(
+  async postCsvFile(
     @UploadedFile(
       new ParseFilePipe({
         validators: [new FileTypeValidator({ fileType: 'text/csv' })],
       }),
     )
     file: Express.Multer.File,
+    @Res() response: Response,
+    @Req() request: Request,
   ) {
     console.log(file);
-    const keywords = await this.parser.parseData<string>(file);
+    const keywords = await this.parser.parseData<CsvField>(file);
     this.eventEmitter.emit('file.uploaded', new FileUploadedEvent(keywords));
 
-    return {
+    console.log(request.user, 'user');
+
+    // @ts-ignore
+    request.session.data = {
       success: true,
       message:
         'Your file has been uploaded. Your results will be displayed as they are available',
     };
+    response.redirect('/search-stat');
   }
 }

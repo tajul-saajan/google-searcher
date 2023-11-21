@@ -5,15 +5,24 @@ import {
   ISearcher,
   Searcher,
 } from '../../searcher/interfaces/searcher.interface';
+import { EntityManager } from 'typeorm';
+import { SearchStat } from '../../entities/search-stat.entity';
 
 @Injectable()
 export class SearchListener {
-  constructor(@Inject(ISearcher) private readonly searcher: Searcher) {}
+  constructor(
+    @Inject(ISearcher) private readonly searcher: Searcher,
+    private readonly entityManager: EntityManager,
+  ) {}
   @OnEvent('file.uploaded', { async: true })
   async handleOrderCreatedEvent(payload: FileUploadedEvent) {
-    for (const keyword of payload.keywords) {
+    for (const { keyword } of payload.rowObject) {
       const result = await this.searcher.search(keyword);
-      console.log(result);
+      await this.entityManager.save(SearchStat, {
+        ...result,
+        keyword,
+      });
+      console.log('saved to db');
     }
   }
 }

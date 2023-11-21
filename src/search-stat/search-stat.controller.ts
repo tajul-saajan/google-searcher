@@ -1,4 +1,11 @@
-import { Controller, Get, Query, Render, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Render,
+  Session,
+  UseGuards,
+} from '@nestjs/common';
 import { SearchStatService } from './search-stat.service';
 import { IsAuthenticatedGuard } from '../guards/is-authenticated';
 
@@ -9,9 +16,11 @@ export class SearchStatController {
   @UseGuards(IsAuthenticatedGuard)
   @Render('home')
   @Get()
-  async findMany(@Query() { search }) {
+  async findMany(@Query() { search }, @Session() session: Record<string, any>) {
     const results = await this.service.findMany(search);
-    return { results };
+    const { data } = session;
+    delete session.data;
+    return { results, ...data };
   }
 
   @Get('keywords')

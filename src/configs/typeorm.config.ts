@@ -17,7 +17,6 @@ export const typeormConfig: TypeOrmModuleAsyncOptions = {
       database: configService.getOrThrow('DB_DATABASE'),
       username: configService.getOrThrow('DB_USERNAME'),
       password: configService.getOrThrow('DB_PASSWORD'),
-      migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
       entities: [User, SearchStat],
       synchronize: true,
     };

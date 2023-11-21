@@ -1,3 +1,5 @@
+import { CsvField } from '../../types/csvField';
+
 export class FileUploadedEvent {
-  constructor(public readonly keywords: string[]) {}
+  constructor(public readonly rowObject: CsvField[]) {}
 }
