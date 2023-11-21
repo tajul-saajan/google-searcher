@@ -21,6 +21,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     SearchStatModule,
     ParserModule,
     SearchModule,
+    SearcherModule,
   ],
 })
 export class AppModule {}

@@ -4,6 +4,7 @@ import {
   Inject,
   ParseFilePipe,
   Post,
+  Render,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -18,6 +19,8 @@ export class SearchController {
     @Inject(IFileParser) private readonly parser: FileParser,
     private readonly eventEmitter: EventEmitter2,
   ) {}
+
+  @Render('home')
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async postDummy(
@@ -31,5 +34,11 @@ export class SearchController {
     console.log(file);
     const keywords = await this.parser.parseData<string>(file);
     this.eventEmitter.emit('file.uploaded', new FileUploadedEvent(keywords));
+
+    return {
+      success: true,
+      message:
+        'Your file has been uploaded. Your results will be displayed as they are available',
+    };
   }
 }
