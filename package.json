@@ -30,6 +30,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "express-session": "^1.17.3",
+    "fast-csv": "^4.3.6",
     "hbs": "^4.2.0",
     "mysql": "^2.18.1",
     "passport": "^0.6.0",
