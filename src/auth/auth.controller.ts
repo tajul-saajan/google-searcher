@@ -27,11 +27,9 @@ export class AuthController {
 
   @UseGuards(LocalGuard)
   @Post('login')
-  loginUser(@Req() request: Request): Promise<any> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    console.log(request.user);
-    return this.service.login();
+  async loginUser(@Req() request: Request, @Res() res: Response) {
+    await this.service.login();
+    return res.redirect('/search-stat');
   }
   @Render('signup')
   @Get('signup')
@@ -40,8 +38,20 @@ export class AuthController {
   }
 
   @Post('signup')
-  async createUser(@Body() signupDto: UserSignupDto) {
-    return await this.service.signUpUser(signupDto);
+  async createUser(
+    @Body() signupDto: UserSignupDto,
+    @Session() s: ExpressSession,
+    @Res() response: Response,
+  ) {
+    const { success, error, data } = await this.service.signUpUser(
+      signupDto,
+      s,
+    );
+
+    if (!success) {
+      response.render('signup', { error });
+    }
+    response.render('login');
   }
 
   @Get('logout')

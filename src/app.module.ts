@@ -3,6 +3,7 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeormConfig } from './configs/typeorm.config';
 import { ConfigModule } from '@nestjs/config';
+import { SearchStatModule } from './search-stat/search-stat.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath: '.env',
     }),
     TypeOrmModule.forRootAsync(typeormConfig),
+    SearchStatModule,
   ],
 })
 export class AppModule {}

@@ -7,18 +7,24 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class User {
+export class SearchStat {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  name: string;
+  keyword: string;
 
   @Column()
-  email: string;
+  adsCount: number;
 
   @Column()
-  password: string;
+  linksCount: number;
+
+  @Column({ type: 'bigint' })
+  totalResultsCount: number;
+
+  @Column({ type: 'text' })
+  response: string;
 
   @CreateDateColumn()
   createdAt: Date;
