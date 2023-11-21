@@ -7,11 +7,12 @@ export class SearchStatService {
   constructor(private readonly entityManager: EntityManager) {}
 
   async findMany(search: string) {
-    return await this.entityManager.find(SearchStat, {
-      where: {
-        keyword: Like(`${search}`),
-      },
-    });
+    const query = this.entityManager.createQueryBuilder(SearchStat, 'ss');
+    if (search) {
+      query.where('ss.keyword LIKE :search', { search: `%${search}%` });
+    }
+
+    return await query.getMany();
   }
 
   async getKeywords() {
