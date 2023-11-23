@@ -4,6 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import * as session from 'express-session';
 import * as passport from 'passport';
+import * as express from 'express';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
@@ -19,6 +20,7 @@ async function bootstrap() {
       cookie: { maxAge: 600000000 },
     }),
   );
+  app.use('/public', express.static(join(__dirname, '..', 'public')));
   app.use(passport.initialize());
   app.use(passport.session());
   app.useGlobalPipes(new ValidationPipe());

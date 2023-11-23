@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/public/css/base.css">
   <title>CSV Upload and Search</title>
-  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-8">
 <!-- CSV Upload Form -->
@@ -28,7 +28,8 @@
     <div class="mb-4">
       <input required type="text" name="search" placeholder="Search..." class="border p-2 rounded w-full">
     </div>
-    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Search</button>
+    <button id="btn" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Search
+    </button>
   </form>
 </div>
 
@@ -84,6 +85,5 @@
     </div>
   </div>
 </div>
-
 </body>
 </html>
