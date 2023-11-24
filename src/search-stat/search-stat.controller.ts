@@ -1,6 +1,8 @@
 import {
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
   Query,
   Render,
   Session,
@@ -32,5 +34,12 @@ export class SearchStatController {
   @Get('keywords')
   async keywordList() {
     return await this.service.getKeywords();
+  }
+
+  @Render('details')
+  @Get('details/:id')
+  async getDetails(@Param('id', ParseIntPipe) id: number) {
+    console.log(id);
+    return await this.service.findOne(id);
   }
 }

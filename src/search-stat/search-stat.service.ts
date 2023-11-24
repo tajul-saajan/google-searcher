@@ -35,4 +35,8 @@ export class SearchStatService {
       },
     });
   }
+
+  async findOne(id: number) {
+    return await this.entityManager.findOneBy(SearchStat, { id });
+  }
 }
