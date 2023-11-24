@@ -27,13 +27,21 @@ export class SearchStatService {
     // return await query.getMany();
   }
 
-  async getKeywords() {
-    return await this.entityManager.find(SearchStat, {
-      select: { keyword: true },
-      order: {
-        id: 'DESC',
+  async getKeywords(pgQuery: PaginateQuery) {
+    return await paginate(
+      pgQuery,
+      this.entityManager.getRepository(SearchStat),
+      {
+        filterableColumns: {
+          keyword: [FilterOperator.ILIKE],
+        },
+        searchableColumns: [],
+        select: ['keyword'],
+        sortableColumns: ['id'],
+        defaultSortBy: [['id', 'DESC']],
+        nullSort: 'last',
       },
-    });
+    );
   }
 
   async findOne(id: number) {

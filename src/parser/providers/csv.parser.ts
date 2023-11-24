@@ -15,14 +15,15 @@ export class CsvParser implements FileParser {
         parseFile(filePath, { headers: true })
           .on('data', (row) => rows.push(row))
           .on('end', () => {
-            fs.unlink(filePath, (err) => {
-              if (err) {
-                console.error('Error deleting the file:', err);
-                return;
-              }
-              console.log('File has been deleted.');
-            });
-            console.log('ended', rows);
+            // todo file delete functionalities separately
+            // fs.unlink(filePath, (err) => {
+            //   if (err) {
+            //     console.error('Error deleting the file:', err);
+            //     return;
+            //   }
+            //   console.log('File has been deleted.');
+            // });
+            // console.log('ended', rows);
             resolve(rows);
           });
       } catch (error) {

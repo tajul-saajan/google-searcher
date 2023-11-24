@@ -63,7 +63,6 @@ export class AuthController {
   @UseGuards(IsAuthenticatedGuard)
   @Get('profile')
   async profile(@Session() s: ExpressSession) {
-    console.log('kkop', s);
     return s;
   }
 }
