@@ -28,29 +28,28 @@ export class SearchStatController {
     @Res() response: Response,
   ) {
     const results = await this.service.findMany(search, query);
-    console.log(results);
     const { data } = session;
     delete session.data;
-    response.render('home', { layout: 'aas', data: { results, ...data } });
-    // return { results, ...data };
+    response.render('home', { layout: 'template', data: { results, ...data } });
   }
 
+  @UseGuards(IsAuthenticatedGuard)
   @Get('keywords')
-  async keywordList() {
-    return await this.service.getKeywords();
+  async keywordList(
+    @Paginate() query: PaginateQuery,
+    @Res() response: Response,
+  ) {
+    const data = await this.service.getKeywords(query);
+    response.render('keywords', { layout: 'template', data });
   }
 
+  @UseGuards(IsAuthenticatedGuard)
   @Get('details/:id')
   async getDetails(
     @Param('id', ParseIntPipe) id: number,
     @Res() response: Response,
   ) {
     const data = await this.service.findOne(id);
-    response.render('details', { layout: 'aas', data });
-  }
-
-  @Get('dummy')
-  async getDummy(@Res() response: Response) {
-    response.render('dummy', { layout: 'aas' });
+    response.render('details', { layout: 'template', data });
   }
 }
