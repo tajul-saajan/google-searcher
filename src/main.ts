@@ -6,12 +6,21 @@ import * as session from 'express-session';
 import * as passport from 'passport';
 import * as express from 'express';
 import { ValidationPipe } from '@nestjs/common';
+import * as handlebars from 'express-handlebars';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'resources/views'));
   app.setViewEngine('hbs');
+  app.engine(
+    'handlebars',
+    handlebars.engine({
+      layoutsDir: __dirname + 'resources/layouts',
+      extname: 'hbs',
+      partialsDir: __dirname + '/views/partials/',
+    }),
+  );
   app.use(
     session({
       secret: 'asfhdslk',
