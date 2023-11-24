@@ -4,7 +4,6 @@ import {
   Param,
   ParseIntPipe,
   Query,
-  Render,
   Res,
   Session,
   UseGuards,
