@@ -15,12 +15,15 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { FileUploadedEvent } from './events/file-uploaded.event';
 import { Response, Request } from 'express';
 import { CsvField } from '../types/csvField';
+import { SearchService } from './search.service';
 
 @Controller('search')
 export class SearchController {
   constructor(
     @Inject(IFileParser) private readonly parser: FileParser,
     private readonly eventEmitter: EventEmitter2,
+
+    private readonly service: SearchService,
   ) {}
 
   @Post()
@@ -37,6 +40,7 @@ export class SearchController {
   ) {
     console.log(file);
     const keywords = await this.parser.parseData<CsvField>(file);
+    this.service.deleteFile();
     this.eventEmitter.emit('file.uploaded', new FileUploadedEvent(keywords));
 
     console.log(request.user, 'user');
