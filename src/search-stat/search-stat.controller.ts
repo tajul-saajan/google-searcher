@@ -40,11 +40,13 @@ export class SearchStatController {
     return await this.service.getKeywords();
   }
 
-  @Render('details')
   @Get('details/:id')
-  async getDetails(@Param('id', ParseIntPipe) id: number) {
-    console.log(id);
-    return await this.service.findOne(id);
+  async getDetails(
+    @Param('id', ParseIntPipe) id: number,
+    @Res() response: Response,
+  ) {
+    const data = await this.service.findOne(id);
+    response.render('details', { layout: 'aas', data });
   }
 
   @Get('dummy')
