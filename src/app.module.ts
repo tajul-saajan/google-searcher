@@ -10,6 +10,7 @@ import { SearcherModule } from './searcher/searcher.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { bullModuleAsyncConfig } from './configs/queue.config';
 import { BullModule } from '@nestjs/bull';
+import { QueuesModule } from './queues/queues.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { BullModule } from '@nestjs/bull';
     EventEmitterModule.forRoot(),
     TypeOrmModule.forRootAsync(typeormConfig),
     BullModule.forRootAsync(bullModuleAsyncConfig),
+    QueuesModule,
     BullModule.registerQueueAsync({
       name: 'search',
     }),
