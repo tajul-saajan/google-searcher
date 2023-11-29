@@ -24,5 +24,6 @@ export class SearchConsumer {
       isProcessed: true,
       id,
     });
+    console.log('saved to db');
   }
 }
