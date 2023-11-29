@@ -14,17 +14,20 @@ export class SearchStat {
   @Column()
   keyword: string;
 
-  @Column()
+  @Column({ nullable: true })
   adsCount: number;
 
-  @Column()
+  @Column({ nullable: true })
   linksCount: number;
 
-  @Column({ type: 'bigint' })
+  @Column({ type: 'bigint', nullable: true })
   totalResultsCount: number;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   cachedResponse: string;
+
+  @Column({ type: 'bool', default: false })
+  isProcessed: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
