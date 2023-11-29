@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { SearchController } from './search.controller';
 import { SearchService } from './search.service';
 import { ParserModule } from '../parser/parser.module';
-import { SearchListener } from './listeners/search.listener';
 import { SearcherModule } from '../searcher/searcher.module';
 import { BullModule } from '@nestjs/bull';
 
@@ -15,6 +14,6 @@ import { BullModule } from '@nestjs/bull';
     }),
   ],
   controllers: [SearchController],
-  providers: [SearchService, SearchListener],
+  providers: [SearchService],
 })
 export class SearchModule {}
