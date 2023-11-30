@@ -40,21 +40,20 @@ export class SearchController {
     @Res() response: Response,
     @Req() request: Request,
   ) {
-    const sessionData = {
-      success: true,
-      message:
-        'Your file has been uploaded. Your results will be displayed as they are available',
-    };
+    let message =
+      'Your file has been uploaded. Your results will be displayed as they are available';
     const { data, valid } = await this.parserService.parseAndValidate(file);
     this.searchService.deleteFile();
     if (!valid) {
-      sessionData.success = false;
-      sessionData.message = `Uploaded file should not contain more than ${this.MAX_ALLOWED_KEYWORDS} keywords`;
-    } else this.eventEmitter.emit('file.uploaded', new FileUploadedEvent(data));
+      message = `Uploaded file should not contain more than ${this.MAX_ALLOWED_KEYWORDS} keywords`;
+      request.flash('upload.error', message);
+    } else {
+      request.flash('upload.success', message);
+      this.eventEmitter.emit('file.uploaded', new FileUploadedEvent(data));
+    }
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    request.session.data = sessionData;
     response.redirect('/search-stat');
   }
 }

@@ -28,11 +28,11 @@
 
     {{#if data.success}}
       <div class="my-1 text-green-600">
-        {{ data.message }}
+        {{ data.success }}
       </div>
-    {{else}}
+    {{else if data.error}}
       <div class="my-1 text-red-600">
-        {{ data.message }}
+        {{ data.error }}
       </div>
     {{/if}}
 

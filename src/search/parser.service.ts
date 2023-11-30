@@ -14,7 +14,7 @@ export class ParserService {
     return { data: csvFields, valid };
   }
 
-  async validateLength(parsedDataLength: number) {
+  validateLength(parsedDataLength: number) {
     return (
       parsedDataLength >= this.MIN_ALLOWED_KEYWORDS &&
       parsedDataLength <= this.MAX_ALLOWED_KEYWORDS
