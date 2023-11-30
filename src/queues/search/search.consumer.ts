@@ -1,4 +1,9 @@
-import { Process, Processor } from '@nestjs/bull';
+import {
+  OnQueueCompleted,
+  OnQueueFailed,
+  Process,
+  Processor,
+} from '@nestjs/bull';
 import { Job } from 'bull';
 import { SearchStat } from '../../entities/search-stat.entity';
 import { Inject } from '@nestjs/common';
@@ -7,6 +12,7 @@ import {
   Searcher,
 } from '../../searcher/interfaces/searcher.interface';
 import { EntityManager } from 'typeorm';
+import { SearchStatus } from '../../types/enums/searchStatus';
 
 @Processor('search')
 export class SearchConsumer {
@@ -24,5 +30,30 @@ export class SearchConsumer {
       isProcessed: true,
       id,
     });
+  }
+
+  // This method is called when a job fails after all attempts
+  @OnQueueFailed()
+  async onFailed(job: Job, error: any) {
+    const { keyword, id } = job.data;
+    console.error(
+      `Job failed after all attempts | keyword: ${keyword}, Error: ${error.message}`,
+    );
+    await this.entityManager.update(
+      SearchStat,
+      { id },
+      { status: SearchStatus.FAILED },
+    );
+  }
+
+  @OnQueueCompleted()
+  async onCompleted(job: Job) {
+    const { keyword, id } = job.data;
+    console.info(`Job completed | keyword: ${keyword}`);
+    await this.entityManager.update(
+      SearchStat,
+      { id },
+      { status: SearchStatus.COMPLETED },
+    );
   }
 }
