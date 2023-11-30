@@ -16,15 +16,16 @@ import { FileUploadedEvent } from './events/file-uploaded.event';
 import { Response, Request } from 'express';
 import { CsvField } from '../types/csvField';
 import { SearchService } from './search.service';
+import { ParserService } from './parser.service';
 
 @Controller('search')
 export class SearchController {
   private readonly MAX_ALLOWED_KEYWORDS = 100;
   constructor(
-    @Inject(IFileParser) private readonly parser: FileParser,
+    private readonly parserService: ParserService,
     private readonly eventEmitter: EventEmitter2,
 
-    private readonly service: SearchService,
+    private readonly searchService: SearchService,
   ) {}
 
   @Post()
@@ -44,15 +45,12 @@ export class SearchController {
       message:
         'Your file has been uploaded. Your results will be displayed as they are available',
     };
-    const keywords = await this.parser.parseData<CsvField>(file);
-    this.service.deleteFile();
-    if (keywords.length > this.MAX_ALLOWED_KEYWORDS) {
+    const { data, valid } = await this.parserService.parseAndValidate(file);
+    this.searchService.deleteFile();
+    if (!valid) {
       sessionData.success = false;
       sessionData.message = `Uploaded file should not contain more than ${this.MAX_ALLOWED_KEYWORDS} keywords`;
-    }
-
-    if (sessionData.success)
-      this.eventEmitter.emit('file.uploaded', new FileUploadedEvent(keywords));
+    } else this.eventEmitter.emit('file.uploaded', new FileUploadedEvent(data));
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
