@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ISearcher } from './interfaces/searcher.interface';
-import { GoogleSearcher } from './providers/google.searcher';
+import { GoogleSearcherAxiosCheerio } from './providers/google.searcher.axios-cheerio';
 
 @Module({
-  providers: [{ provide: ISearcher, useClass: GoogleSearcher }],
+  providers: [{ provide: ISearcher, useClass: GoogleSearcherAxiosCheerio }],
   exports: [ISearcher],
 })
 export class SearcherModule {}

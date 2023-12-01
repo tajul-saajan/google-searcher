@@ -3,6 +3,7 @@ import { SearchController } from './search.controller';
 import { SearchService } from './search.service';
 import { ParserModule } from '../parser/parser.module';
 import { SearcherModule } from '../searcher/searcher.module';
+import { ParserService } from './parser.service';
 import { BullModule } from '@nestjs/bull';
 
 @Module({
@@ -14,6 +15,6 @@ import { BullModule } from '@nestjs/bull';
     }),
   ],
   controllers: [SearchController],
-  providers: [SearchService],
+  providers: [SearchService, ParserService],
 })
 export class SearchModule {}
