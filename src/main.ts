@@ -7,6 +7,8 @@ import * as passport from 'passport';
 import * as express from 'express';
 import { ValidationPipe } from '@nestjs/common';
 import * as handlebars from 'express-handlebars';
+// @ts-ignore
+import * as flash from 'connect-flash';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -32,6 +34,7 @@ async function bootstrap() {
   app.use('/public', express.static(join(__dirname, '..', 'public')));
   app.use(passport.initialize());
   app.use(passport.session());
+  app.use(flash());
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(3010);
 }
