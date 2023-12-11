@@ -30,6 +30,7 @@ export class SearchConsumer {
       isProcessed: true,
       id,
     });
+    console.log('saved to db');
   }
 
   // This method is called when a job fails after all attempts
