@@ -1,16 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Result Details</title>
-  <link rel="stylesheet" href="/public/css/base.css">
-</head>
-<body class="bg-gray-100 font-sans">
-
-<div class="mt-10 w-full h-full">
-  <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
-  <a class="my-4 cursor-pointer" href="/search-stat">Back</a>
+<div class="mt-10 w-full p-4 h-full bg-white shadow-md">
+  <a class="my-4 ml-2 cursor-pointer px-2 py-1 bg-gradient-to-br max-w-xs text-gray-900" href="/search-stat">Back</a>
+  <div class="rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
     <div class="mb-4">
       <h1 class="text-xl font-bold mb-2">Keyword Information</h1>
       <p class="text-base text-gray-700 mb-4">
@@ -22,7 +12,7 @@
       <label class="block text-gray-700 text-sm font-bold mb-2" for="keyword">
         Keyword
       </label>
-      <p id="keyword" class="text-gray-600 text-base">{{keyword}}</p>
+      <p id="keyword" class="text-gray-600 text-base">{{data.keyword}}</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -30,21 +20,21 @@
         <label class="block text-gray-700 text-sm font-bold mb-2" for="adsCount">
           Ads Count
         </label>
-        <p id="adsCount" class="text-gray-600 text-base">{{adsCount}}</p>
+        <p id="adsCount" class="text-gray-600 text-base">{{data.adsCount}}</p>
       </div>
 
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="linksCount">
           Links Count
         </label>
-        <p id="linksCount" class="text-gray-600 text-base">{{linksCount}}</p>
+        <p id="linksCount" class="text-gray-600 text-base">{{data.linksCount}}</p>
       </div>
 
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="totalResultsCount">
           Total Results Count
         </label>
-        <p id="totalResultsCount" class="text-gray-600 text-base">{{totalResultsCount}}</p>
+        <p id="totalResultsCount" class="text-gray-600 text-base">{{data.totalResultsCount}}</p>
       </div>
     </div>
 
@@ -55,11 +45,9 @@
       <div id="cachedResponse"
            class="p-4 bg-gray-50 rounded border border-gray-200 text-gray-700 text-sm w-full h-full
             max-w-md max-h-96 overflow-auto">
-        {{cachedResponse}}
+        {{data.cachedResponse}}
       </div>
     </div>
   </div>
 </div>
 
-</body>
-</html>
